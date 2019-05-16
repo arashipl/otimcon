@@ -316,14 +316,22 @@ void bleep() {
 #ifdef USE_LED
     digitalWrite(FEEDBACK_LED, HIGH);
 #endif
-#ifdef USE_PIEZO
+#if defined(USE_PIEZO)
     tone(FEEDBACK_PIEZO, 3500, 40);    
+#elif defined(USE_BUZZER)
+  digitalWrite(FEEDBACK_BUZZER, HIGH);
+	delay(40);
+#else 
+	delay(40);
 #endif
 #ifdef USE_LED
     digitalWrite(FEEDBACK_LED, LOW);
 #endif
-#ifdef USE_PIEZO
-    tone(FEEDBACK_PIEZO, 3500, 200);    
+#if defined(USE_PIEZO)
+  tone(FEEDBACK_PIEZO, 3500, 200);    
+#elif defined (USE_BUZZER)
+  delay(200);
+  digitalWrite(FEEDBACK_BUZZER, LOW);
 #endif
   
   

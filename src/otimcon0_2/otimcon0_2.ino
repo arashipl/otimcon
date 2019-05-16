@@ -33,6 +33,7 @@
  *  - DS3231 module connected via I2C on A4 (SDA) and A5 (SCL)  
  *  - MFRC522 conected via SPI (D13 SCK, D12 MISO, D11 MOSI, with RESET AND SS are selected in code (in this case SS is D10, and RESET D9)
  *  - LED and or piezo are connected to pin selected in code (in this case LED is on D8 and PIEZO on D7). 
+ *  - an optional buzzer with integrated generator is connected to pin selected in code (in this case D2).
  *  
  *  Don't forget the resistors for current (LED, piezo) or for pull-up and pull-down on SPI/I2C
  *
@@ -63,17 +64,18 @@
 // preprocessing command are used!
 #define USE_EEPROM_BACKUP
 #define USE_LED
-#define USE_PIEZO
+//#define USE_PIEZO
+#define USE_BUZZER
 
 // comment this if you want to use serial only if neccessary. If this is uncommented it will always use serial port, even if nothing is connected.
 #define USE_SERIAL_ALWAYS  
                      
 // comment this if you don't need low power work (the system won't go to sleep but serial will always work)
-//#define LOW_POWER  
+#define LOW_POWER  
 
 // uncomment this if you want to use a little more energy - needed when powered from cheep powerbanks which auto shut off.
 // The control will not go to sleep, and will blink a LED on HIGH_POWER_LED (by default pin 4, can be changed)
-#define HIGH_POWER  
+//#define HIGH_POWER  
 
 
 #define DS3231_I2C_ADDRESS 0x68    // I2C address for DS3231
@@ -85,6 +87,7 @@
 
 #define FEEDBACK_LED        8                 // pin for LED
 #define FEEDBACK_PIEZO      7                 // piezo
+#define FEEDBACK_BUZZER     2                 // buzzer
 
 #define SERIAL_ACTIVE_PIN   6                // if you want to use serial only when needed, then select a pin (this is D6) and connect it HIGH 
 
@@ -244,6 +247,9 @@ void setup() {
 #endif
 #ifdef USE_PIEZO
        pinMode(FEEDBACK_PIEZO, OUTPUT);
+#endif
+#ifdef USE_BUZZER
+       pinMode(FEEDBACK_BUZZER, OUTPUT);
 #endif
 
       // if USE_SERIAL_ALWAYS is not set, then it's needed to set a pin SERIAL_ACTIVE_PIN
