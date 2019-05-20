@@ -30,6 +30,8 @@ def usage():
     print "  -h --help       Show this screen"
     print "  -p --port       Serial port for OTIMCON"
     print "  -s --speed      Speed of serial port for OTIMCON, default 38400"
+	print "  -o --printport  Serial port for thermal printer"	
+    print "  -x --printspeed Speed of serial port for thermal printer, default 115200"
     print "  -i --increment  Save every ticket, with incremental filename"
     print "  -c --command    Command which starts the print, default 'lpr'"
     print ""
@@ -56,12 +58,18 @@ def inputParse():
         sys.exit(2)
     port = ''
     speed = '38400'
+    pport = ''
+    pspeed = '115200'
     increment = False
     for o, a in opts:
         if o in ("-p", "--port"):
             port = a
         elif o in ("-s", "--speed"):
             speed = a
+        if o in ("-o", "--printport"):
+            pport = a
+        elif o in ("-x", "--printspeed"):
+            pspeed = a
         elif o in ("-i", "--increment"):
             increment = True
         elif o in ("-h", "--help"):
@@ -72,7 +80,7 @@ def inputParse():
         else:
             assert False, "unhandled option"
 	print (port)
-    return port, speed, increment
+    return port, speed, pport, pspeed, increment
 
 
 def convertToPrintMode(ser):
@@ -105,9 +113,13 @@ def convertToPrintMode(ser):
 if __name__ == '__main__':
     import sys, subprocess, serial, time
 
-    port, speed, incrementFilename = inputParse()
+    port, speed, pport, pspeed, incrementFilename = inputParse()
     if port is '':
         print "\n!!! Error: Port must be defined!"
+        print "Use ticket_print --help for usage.\n"
+        sys.exit(2)
+    if pport is '':
+        print "\n!!! Error: Printer port must be defined!"
         print "Use ticket_print --help for usage.\n"
         sys.exit(2)
     try:
@@ -164,7 +176,7 @@ if __name__ == '__main__':
         else: # no new data in buffer, close the temporaty ticket file and print it
             if newData:
                 fileOutput.close()
-                print "File closed, printing the " + str(ticketNo) + ". ticket using the '" + startCommand + "' command."
+                print "File closed, waiting for next chip" #, printing the " + str(ticketNo) + ". ticket using the '" + startCommand + "' command."
                 time.sleep(0.1)
 #                subprocess.call(startCommand + " " + fileName, shell=True)
                 ticketNo += 1
