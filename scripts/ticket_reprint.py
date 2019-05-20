@@ -165,9 +165,9 @@ if __name__ == '__main__':
             if newData is False:
                 if incrementFilename is True:
                     print "Incrementing filename number.."
-                    fileName = "temp_ticket_" + str(ticketNo)
+                    fileName = "temp_ticket_" + str(ticketNo) + ".txt"
                 else:
-                    fileName = "temp_ticket"
+                    fileName = "temp_ticket" + ".txt"
                 fileOutput = open(fileName, "w")
             newData = True
             sys.stdout.write(readData)
