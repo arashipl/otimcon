@@ -348,7 +348,7 @@ void bleep() {
  * TODO: Do this!
  */
 
-void sleep() {
+void sleepOTC() {
 #if DEBUG > 4  
   Serial.print(F("Sleep!"));
   Serial.flush();
@@ -657,6 +657,7 @@ boolean printControls() {
                 serialDate(current);
                 Serial.println();
                 previousDate = currentDate ;
+                Serial.println(F("No PK   PK time    total"));
               }
             Serial.print(j);
             Serial.print(F(" "));
@@ -679,9 +680,9 @@ boolean printControls() {
              Serial.print(F("  "));
 
              
-            DateTime t(timestamp + SECONDS_FROM_1970_TO_2000);          
-            serialTime(t);
-            Serial.print(F("  "));
+           // DateTime t(timestamp + SECONDS_FROM_1970_TO_2000);          
+           // serialTime(t);
+           // Serial.print(F("  "));
 
             DateTime t2(timestamp - previousControlTime + SECONDS_FROM_1970_TO_2000);          
             serialTime(t2);
